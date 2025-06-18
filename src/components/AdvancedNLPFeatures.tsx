@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, Title, Text } from '@tremor/react'
 import {
   DocumentDuplicateIcon,
-  TranslateIcon,
+  GlobeAltIcon,
   SparklesIcon,
   ArrowPathIcon,
   CheckCircleIcon,
@@ -164,7 +164,7 @@ export default function AdvancedNLPFeatures() {
               ) : (
                 <>
                   {activeTab === 'summarize' && <DocumentDuplicateIcon className="h-5 w-5 mr-2" />}
-                  {activeTab === 'translate' && <TranslateIcon className="h-5 w-5 mr-2" />}
+                  {activeTab === 'translate' && <GlobeAltIcon className="h-5 w-5 mr-2" />}
                   {activeTab === 'generate' && <SparklesIcon className="h-5 w-5 mr-2" />}
                   {activeTab === 'summarize' && 'Summarize Text'}
                   {activeTab === 'translate' && 'Translate Text'}
@@ -257,7 +257,7 @@ export default function AdvancedNLPFeatures() {
           ) : (
             <div className="mt-4 p-8 text-center text-gray-500">
               {activeTab === 'summarize' && <DocumentDuplicateIcon className="mx-auto h-12 w-12 text-gray-400" />}
-              {activeTab === 'translate' && <TranslateIcon className="mx-auto h-12 w-12 text-gray-400" />}
+              {activeTab === 'translate' && <GlobeAltIcon className="mx-auto h-12 w-12 text-gray-400" />}
               {activeTab === 'generate' && <SparklesIcon className="mx-auto h-12 w-12 text-gray-400" />}
               <Text className="mt-2">
                 {activeTab === 'summarize' && 'Enter text and click summarize to see results'}
