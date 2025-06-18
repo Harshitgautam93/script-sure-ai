@@ -2,15 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    optimizeCss: true,
-  },
+  output: 'export',
+  trailingSlash: true,
   images: {
-    domains: [],
-    unoptimized: false,
+    unoptimized: true,
   },
-  // Optimize for Vercel
-  output: 'standalone',
   poweredByHeader: false,
 }
 
