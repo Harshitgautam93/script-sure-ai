@@ -7,7 +7,12 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  poweredByHeader: false,
+  // Disable server-side features for static export
+  experimental: {
+    appDir: true,
+  },
+  // Ensure static export works
+  distDir: 'out',
 }
 
 module.exports = nextConfig 
