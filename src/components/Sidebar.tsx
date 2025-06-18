@@ -4,19 +4,19 @@ import { useState } from 'react'
 import { Bars3Icon, XMarkIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useSession, signOut } from 'next-auth/react'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
-  const { data: session, status } = useSession()
+  const { user, loading, signOut } = useAuth()
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen)
   }
 
-  const handleSignOut = () => {
-    signOut({ callbackUrl: '/auth/signin' })
+  const handleSignOut = async () => {
+    await signOut()
   }
 
   const menuItems = [
@@ -27,8 +27,8 @@ export default function Sidebar() {
     { name: 'NLP', href: '/nlp' },
   ]
 
-  // Add admin menu item if user is admin
-  if (session?.user?.role === 'ADMIN') {
+  // Add admin menu item if user is admin (you can implement admin check based on your needs)
+  if (user?.user_metadata?.role === 'ADMIN') {
     menuItems.push({ name: 'Admin', href: '/admin' })
   }
 
@@ -61,15 +61,15 @@ export default function Sidebar() {
           </div>
 
           {/* User Info */}
-          {status === 'authenticated' && session?.user && (
+          {!loading && user && (
             <div className="p-4 border-b border-gray-800">
               <div className="flex items-center space-x-3">
                 <UserCircleIcon className="w-8 h-8 text-gray-400" />
                 <div>
-                  <p className="text-sm font-medium text-white">{session.user.name}</p>
-                  <p className="text-xs text-gray-400">{session.user.email}</p>
+                  <p className="text-sm font-medium text-white">{user.user_metadata?.name || user.email}</p>
+                  <p className="text-xs text-gray-400">{user.email}</p>
                   <span className="inline-block px-2 py-1 text-xs bg-blue-500/20 text-blue-400 rounded-full mt-1">
-                    {session.user.role}
+                    {user.user_metadata?.role || 'USER'}
                   </span>
                 </div>
               </div>
@@ -94,7 +94,7 @@ export default function Sidebar() {
           </nav>
 
           {/* Sign Out Button */}
-          {status === 'authenticated' && (
+          {!loading && user && (
             <div className="p-4 border-t border-gray-800">
               <button
                 onClick={handleSignOut}
@@ -106,10 +106,10 @@ export default function Sidebar() {
           )}
 
           {/* Sign In Link */}
-          {status === 'unauthenticated' && (
+          {!loading && !user && (
             <div className="p-4 border-t border-gray-800">
               <Link
-                href="/auth/signin"
+                href="/auth"
                 className="block w-full px-4 py-2 text-left text-gray-300 hover:bg-gray-800 rounded-lg transition-colors"
                 onClick={() => setIsOpen(false)}
               >
