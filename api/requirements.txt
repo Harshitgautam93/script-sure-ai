@@ -1,0 +1,42 @@
+# AI-Powered Handwriting Assessment & Grading System
+# Python Dependencies
+
+# Core AI/ML Libraries
+tensorflow>=2.12.0
+keras>=2.12.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# Image Processing
+scikit-image>=0.21.0
+scipy>=1.11.0
+
+# Data Processing
+pandas>=2.0.0
+matplotlib>=3.7.0
+
+# Web Framework (for API endpoints)
+flask>=2.3.0
+flask-cors>=4.0.0
+
+# OCR and Text Processing
+pytesseract>=0.3.10
+easyocr>=1.7.0
+
+# Natural Language Processing
+nltk>=3.8.1
+spacy>=3.6.0
+
+# Utilities
+python-dateutil>=2.8.2
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# Development and Testing
+pytest>=7.4.0
+black>=23.7.0
+flake8>=6.0.0
+
+# Optional: GPU Support (uncomment if using GPU)
+# tensorflow-gpu>=2.12.0 
