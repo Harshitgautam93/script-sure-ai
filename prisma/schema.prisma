@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("USER")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  assignments Assignment[]
+  gradingResults GradingResult[]
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Assignment {
+  id          String   @id @default(cuid())
+  title       String
+  subject     String
+  description String?
+  dueDate     DateTime
+  status      String   @default("PENDING")
+  userId      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gradingResults GradingResult[]
+
+  @@map("assignments")
+}
+
+model GradingResult {
+  id            String   @id @default(cuid())
+  assignmentId  String
+  userId        String
+  overallScore  Float
+  accuracy      Float
+  completeness  Float
+  legibility    Float
+  presentation  Float
+  grade         String
+  feedback      String
+  suggestions   String
+  timeSpent     Int
+  qualityMetrics String // JSON string
+  processingTimestamp DateTime
+  createdAt     DateTime @default(now())
+
+  // Relations
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("grading_results")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model ModelPerformance {
+  id            String   @id @default(cuid())
+  modelName     String
+  accuracy      Float
+  precision     Float
+  recall        Float
+  f1Score       Float
+  inferenceSpeed Float
+  trainingProgress Float
+  timestamp     DateTime @default(now())
+
+  @@map("model_performance")
+}
+
+model SystemMetrics {
+  id            String   @id @default(cuid())
+  cpuUsage      Float
+  memoryUsage   Float
+  gpuUsage      Float
+  storageUsage  Float
+  activeUsers   Int
+  apiRequests   Int
+  successRate   Float
+  timestamp     DateTime @default(now())
+
+  @@map("system_metrics")
+} 

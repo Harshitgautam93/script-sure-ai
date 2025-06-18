@@ -14,6 +14,7 @@ import {
   DocumentTextIcon,
   CogIcon,
 } from '@heroicons/react/24/outline'
+import { useSession } from 'next-auth/react'
 
 interface GradingResult {
   overallScore: number
@@ -34,6 +35,24 @@ interface Assignment {
   status: 'pending' | 'graded' | 'overdue'
   score?: number
   grade?: string
+}
+
+interface DatabaseGradingResult {
+  id: string
+  overallScore: number
+  accuracy: number
+  completeness: number
+  legibility: number
+  presentation: number
+  grade: string
+  feedback: string
+  suggestions: string
+  timeSpent: number
+  createdAt: string
+  assignment: {
+    title: string
+    subject: string
+  }
 }
 
 const sampleAssignments: Assignment[] = [
@@ -79,7 +98,32 @@ export default function HandwritingVerification() {
   const [processingProgress, setProcessingProgress] = useState(0)
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [gradingHistory, setGradingHistory] = useState<DatabaseGradingResult[]>([])
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const { data: session } = useSession()
+
+  // Load grading history when component mounts
+  useEffect(() => {
+    if (session?.user) {
+      loadGradingHistory()
+    }
+  }, [session])
+
+  const loadGradingHistory = async () => {
+    setIsLoadingHistory(true)
+    try {
+      const response = await fetch('/api/grading')
+      if (response.ok) {
+        const data = await response.json()
+        setGradingHistory(data)
+      }
+    } catch (error) {
+      console.error('Error loading grading history:', error)
+    } finally {
+      setIsLoadingHistory(false)
+    }
+  }
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
@@ -170,17 +214,58 @@ export default function HandwritingVerification() {
       'Consider using graph paper for diagrams',
     ]
 
-    setGradingResult({
+    const timeSpent = Math.floor(Math.random() * 30) + 15 // 15-45 minutes
+
+    const gradingResult = {
       overallScore,
       accuracy,
       completeness,
       legibility,
       feedback,
       suggestions,
-      timeSpent: Math.floor(Math.random() * 30) + 15, // 15-45 minutes
+      timeSpent,
       grade,
-    })
+    }
 
+    // Save to database
+    try {
+      const response = await fetch('/api/grading', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          overallScore,
+          accuracy,
+          completeness,
+          legibility,
+          presentation: Math.floor(Math.random() * 20) + 80, // 80-100
+          grade,
+          feedback: feedback.join(', '),
+          suggestions: suggestions.join(', '),
+          timeSpent,
+          qualityMetrics: JSON.stringify({
+            edge_density: Math.random() * 0.3 + 0.7,
+            stroke_consistency: Math.random() * 0.3 + 0.7,
+            line_straightness: Math.random() * 0.3 + 0.7
+          }),
+          assignmentType: 'Handwriting Assignment'
+        }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        console.log('Grading result saved:', data)
+        // Refresh grading history
+        await loadGradingHistory()
+      } else {
+        console.error('Failed to save grading result')
+      }
+    } catch (error) {
+      console.error('Error saving grading result:', error)
+    }
+
+    setGradingResult(gradingResult)
     setIsProcessing(false)
   }
 
@@ -462,6 +547,76 @@ export default function HandwritingVerification() {
           </div>
         </div>
       </Card>
+
+      {/* Grading History */}
+      {session?.user && (
+        <Card className="rgb-border bg-gray-900">
+          <Title className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+            <ClockIcon className="w-6 h-6" />
+            Your Grading History
+          </Title>
+          {isLoadingHistory ? (
+            <div className="text-center py-8">
+              <Text className="text-gray-400">Loading your grading history...</Text>
+            </div>
+          ) : gradingHistory.length > 0 ? (
+            <div className="space-y-4">
+              {gradingHistory.slice(0, 5).map((result) => (
+                <div key={result.id} className="p-4 bg-gray-800 rounded-lg border border-gray-700">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <Text className="text-white font-medium">{result.assignment.title}</Text>
+                      <Text className="text-sm text-gray-400">{result.assignment.subject}</Text>
+                    </div>
+                    <div className="text-right">
+                      <Title className={`text-2xl font-bold ${getGradeColor(result.grade)}`}>
+                        {result.overallScore}%
+                      </Title>
+                      <Text className={`text-sm ${getGradeColor(result.grade)}`}>
+                        Grade: {result.grade}
+                      </Text>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <Text className="text-gray-400">Accuracy</Text>
+                      <Text className="text-white">{result.accuracy}%</Text>
+                    </div>
+                    <div>
+                      <Text className="text-gray-400">Completeness</Text>
+                      <Text className="text-white">{result.completeness}%</Text>
+                    </div>
+                    <div>
+                      <Text className="text-gray-400">Legibility</Text>
+                      <Text className="text-white">{result.legibility}%</Text>
+                    </div>
+                    <div>
+                      <Text className="text-gray-400">Time</Text>
+                      <Text className="text-white">{result.timeSpent} min</Text>
+                    </div>
+                  </div>
+                  <div className="mt-3 pt-3 border-t border-gray-700">
+                    <Text className="text-xs text-gray-400">
+                      Graded on {new Date(result.createdAt).toLocaleDateString()}
+                    </Text>
+                  </div>
+                </div>
+              ))}
+              {gradingHistory.length > 5 && (
+                <div className="text-center">
+                  <Text className="text-gray-400">
+                    Showing 5 of {gradingHistory.length} results
+                  </Text>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Text className="text-gray-400">No grading history yet. Upload your first assignment to get started!</Text>
+            </div>
+          )}
+        </Card>
+      )}
     </div>
   )
 } 

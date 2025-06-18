@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Sidebar from '@/components/Sidebar'
 import Preloader from '@/components/Preloader'
+import AuthProvider from '@/components/AuthProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,13 +22,15 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-black text-gray-100 min-h-screen flex`}
       >
-        <Preloader />
-        <div className="flex h-screen w-full">
-          <Sidebar />
-          <main className="flex-1 overflow-y-auto p-6 pt-16">
-            {children}
-          </main>
-        </div>
+        <AuthProvider>
+          <Preloader />
+          <div className="flex h-screen w-full">
+            <Sidebar />
+            <main className="flex-1 overflow-y-auto p-6 pt-16">
+              {children}
+            </main>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   )
