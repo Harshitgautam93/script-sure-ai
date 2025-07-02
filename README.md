@@ -1,251 +1,73 @@
-# AI-Powered Handwriting Assessment & Grading System
+ScriptSure AI
+An AI-powered assessment platform that automatically evaluates and grades handwritten assignments using advanced computer vision and natural language processing.
+![Screenshot 2025-07-03 022434](https://github.com/user-attachments/assets/5083de3f-a307-4025-a480-60406543dec9)
+![Screenshot 2025-07-03 022417](https://github.com/user-attachments/assets/a1581d6c-cfa5-4351-aa7f-cf38c3fa99a8)
+![Screenshot 2025-07-03 022402](https://github.com/user-attachments/assets/79893f32-947b-48ff-960f-bb6e9b1ba327)
+![Screenshot 2025-07-03 022345](https://github.com/user-attachments/assets/dabba881-265d-4d41-b6f0-b3a67f007c4f)
+![Screenshot 2025-07-03 014029](https://github.com/user-attachments/assets/9a87c73f-579b-4a2e-91f4-651110184fbd)
+![Screenshot 2025-07-03 022615](https://github.com/user-attachments/assets/f4d4f9e9-901c-4658-a749-0c61b94ff9c5)
+![Screenshot 2025-07-03 022556](https://github.com/user-attachments/assets/645ff1d1-5d2b-4ecf-bfbd-7852c4f8234f)
+![Screenshot 2025-07-03 022454](https://github.com/user-attachments/assets/808f0794-c3b3-4a6a-9ab3-c977556818ef)
 
-## 🚀 Project Overview
+🚀 Features
 
-This advanced AI system provides automatic assessment and grading of handwritten assignments using cutting-edge machine learning techniques. The system combines computer vision, deep learning, and natural language processing to deliver comprehensive evaluation and feedback.
+Automated Grading: Eliminates manual effort by automatically evaluating handwritten assignments
+High Precision: Uses CNN-based handwriting verification for accurate assessment
+Real-time Processing: Instant evaluation and feedback for submitted assignments
+Intelligent Content Extraction: Advanced OCR and NLP techniques to interpret handwritten text
+Scalable Architecture: Built to handle multiple assignments simultaneously
 
-## 📁 Project Structure
+🛠️ Tech Stack
 
-```
-SCRIPT SURE AI/
-├── frontend/          # React/Next.js Frontend Application
-├── backend/           # Python Flask API Server
-└── README.md         # This file
-```
+Frontend: Next.js
+Database: MongoDB
+AI/ML:
 
-## 🎯 Features
+Convolutional Neural Networks (CNN) for handwriting recognition
+Natural Language Processing (NLP) for content analysis
+OpenCV for image processing
 
-### Core Capabilities
-- **Handwriting Recognition**: Advanced OCR with CNN-based text extraction
-- **Quality Analysis**: Computer vision techniques for handwriting quality assessment
-- **Automatic Grading**: Multi-criteria evaluation with weighted scoring
-- **Real-time Feedback**: Personalized suggestions and improvement recommendations
-- **Performance Analytics**: Detailed metrics and processing statistics
 
-### Technical Stack
-- **Frontend**: React/Next.js with TypeScript
-- **Backend**: Python Flask API
-- **AI/ML**: TensorFlow, Keras, OpenCV (Advanced) / PIL (Basic)
-- **Computer Vision**: Convolutional Neural Networks (CNN)
-- **Image Processing**: Advanced preprocessing and analysis techniques
+Deployment: Vercel
+Rendering: Custom renderer for document processing
 
-## 🚀 Quick Start
+📋 How It Works
 
-### Prerequisites
-- Node.js 16+
-- Python 3.8+
-- Git
+Image Upload: Students submit photos/scans of handwritten assignments
+Preprocessing: OpenCV processes images for optimal recognition
+Text Extraction: CNN models convert handwriting to digital text
+Content Analysis: NLP algorithms evaluate responses against rubrics
+Automated Grading: System generates scores and feedback instantly
 
-### 1. Frontend Setup
+🎯 Use Cases
 
-```bash
-cd frontend
+Educational institutions seeking automated grading solutions
+Teachers managing large volumes of handwritten assignments
+Online learning platforms requiring handwriting assessment
+Standardized testing environments
+
+🔧 Installation
+bash# Clone the repository
+git clone https://github.com/yourusername/scriptsure-ai.git
+
+# Install dependencies
 npm install
+
+# Set up environment variables
+cp .env.example .env.local
+
+# Run the development server
 npm run dev
-```
+📊 Performance
 
-The frontend will be available at `http://localhost:3000`
+Fast processing with real-time evaluation capabilities
+High accuracy in handwriting recognition and content assessment
+Scalable architecture supporting concurrent grading sessions
 
-### 2. Backend Setup
-
-```bash
-cd backend
-pip install -r requirements_simple.txt
-python app.py
-```
-
-The API will be available at `http://localhost:5000`
-
-## 📋 Installation Details
-
-### Frontend (React/Next.js)
-
-Navigate to the frontend directory and install dependencies:
-
-```bash
-cd frontend
-npm install
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-### Backend (Python Flask)
-
-Navigate to the backend directory:
-
-```bash
-cd backend
-```
-
-Install Python dependencies:
-
-```bash
-pip install -r requirements_simple.txt
-```
-
-Start the API server:
-
-```bash
-python app.py
-```
-
-## 🔌 API Endpoints
-
-### Health Check
-```http
-GET http://localhost:5000/health
-```
-
-### Grade Assignment
-```http
-POST http://localhost:5000/api/grade
-```
-
-**Request Body**:
-```json
-{
-  "image_data": "base64_encoded_image_data",
-  "assignment_type": "mathematics|essay|general",
-  "student_id": "optional_student_identifier",
-  "assignment_id": "optional_assignment_identifier"
-}
-```
-
-### Analyze Handwriting Quality
-```http
-POST http://localhost:5000/api/analyze
-```
-
-### Generate Feedback
-```http
-POST http://localhost:5000/api/feedback
-```
-
-### System Statistics
-```http
-GET http://localhost:5000/api/stats
-```
-
-## 🎯 Grading Criteria
-
-The system evaluates assignments based on four weighted criteria:
-
-1. **Accuracy (40%)**: Correctness of answers and calculations
-2. **Completeness (30%)**: All required elements present
-3. **Legibility (20%)**: Clarity and readability of handwriting
-4. **Presentation (10%)**: Overall neatness and organization
-
-### Grade Scale
-- A: 93-100%
-- A-: 90-92%
-- B+: 87-89%
-- B: 83-86%
-- B-: 80-82%
-- C+: 77-79%
-- C: 73-76%
-- C-: 70-72%
-- D+: 67-69%
-- D: 63-66%
-- D-: 60-62%
-- F: Below 60%
-
-## 📊 Performance Metrics
-
-- **Processing Speed**: ~2.3 seconds per assignment
-- **Accuracy Rate**: 98.7%
-- **Supported Languages**: 8
-- **Models Trained**: 15+
-- **Max File Size**: 10MB
-- **Supported Formats**: JPG, PNG, PDF
-
-## 🛠️ Development
-
-### Frontend Development
-```bash
-cd frontend
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run lint         # Run linting
-```
-
-### Backend Development
-```bash
-cd backend
-python app.py        # Start development server
-python -m pytest     # Run tests (if available)
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-Create `.env` files in respective directories:
-
-**Frontend (.env.local)**:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:5000
-```
-
-**Backend (.env)**:
-```env
-PORT=5000
-DEBUG=True
-LOG_LEVEL=INFO
-MAX_FILE_SIZE=10485760
-```
-
-## 🚀 Deployment
-
-### Frontend Deployment
-```bash
-cd frontend
-npm run build
-npm start
-```
-
-### Backend Deployment
-```bash
-cd backend
-pip install -r requirements_simple.txt
-python app.py
-```
-
-For production, consider using:
-- **Frontend**: Vercel, Netlify, or AWS
-- **Backend**: Heroku, AWS, or Docker containers
-
-## 📈 Future Enhancements
-
-- **Multi-language Support**: Additional language models
-- **Advanced OCR**: Better text extraction accuracy
-- **Plagiarism Detection**: Content similarity analysis
-- **Batch Processing**: Multiple assignments at once
-- **Mobile App**: Native mobile application
-- **Integration APIs**: LMS and educational platform integration
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## 📄 License
-
+🤝 Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+📄 License
 This project is licensed under the MIT License.
 
-## 🆘 Support
-
-For technical support or questions:
-- Create an issue in the repository
-- Check the documentation
-- Review the API logs
-
----
-
-**Built with ❤️ using cutting-edge AI technology** 
+Development Period: May 2024 - September 2024
+Built with ❤️ using Next.js, MongoDB, and advanced AI technologies
